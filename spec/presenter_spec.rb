@@ -130,7 +130,12 @@ describe Presenter do
     end
   end
 
-  describe "example in the readme" do
+  describe "basic example in the readme" do
+    after do
+      Object.send :remove_const, :User
+      Object.send :remove_const, :UserPresenter
+    end
+
     it "works" do
       User = Struct.new :first_name, :last_name
 
@@ -143,9 +148,6 @@ describe Presenter do
       user = User.new 'John', 'Doe'
       user_presenter = UserPresenter.new user
       user_presenter.full_name.should == "John Doe"
-
-      Object.send :remove_const, :User
-      Object.send :remove_const, :UserPresenter
     end
   end
 end
