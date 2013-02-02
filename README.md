@@ -6,47 +6,51 @@ A simple presenter.
 
 ## Usage
 
-    require 'presenter'
+```ruby
+require 'presenter'
 
-    User = Struct.new :first_name, :last_name
+User = Struct.new :first_name, :last_name
 
-    class UserPresenter < Presenter
-      def full_name
-        [first_name, last_name].join(' ')
-      end
-    end
+class UserPresenter < Presenter
+  def full_name
+    [first_name, last_name].join(' ')
+  end
+end
 
-    user = User.new 'John', 'Doe'
-    user_presenter = UserPresenter.new user
-    user_presenter.full_name  #=> "John Doe"
+user = User.new 'John', 'Doe'
+user_presenter = UserPresenter.new user
+user_presenter.full_name  #=> "John Doe"
+```
 
 You can also easily wrap objects or collections returned by the presented object with a presenter:
 
-    require 'presenter'
+```ruby
+require 'presenter'
 
-    User = Struct.new :first_name, :last_name, :age, :favorite_numbers
+User = Struct.new :first_name, :last_name, :age, :favorite_numbers
 
-    class AgePresenter < Presenter
-      def to_s
-        "#{@presented} years"
-      end
-    end
+class AgePresenter < Presenter
+  def to_s
+    "#{@presented} years"
+  end
+end
 
-    class NumberPresenter < Presenter
-      def mod_3
-        self % 3
-      end
-    end
+class NumberPresenter < Presenter
+  def mod_3
+    self % 3
+  end
+end
 
-    class UserPresenter < Presenter
-      present :age, AgePresenter
-      present_collection :favorite_numbers, NumberPresenter
-    end
+class UserPresenter < Presenter
+  present :age, AgePresenter
+  present_collection :favorite_numbers, NumberPresenter
+end
 
-    user = User.new 'John', 'Doe', 42, [4, 8, 15, 16, 23, 42]
-    user_presenter = UserPresenter.new user
-    user_presenter.age.to_s  #=> "42 years"
-    user_presenter.favorite_numbers.map(&:mod_3)  #=> [1, 2, 0, 1, 2, 0]
+user = User.new 'John', 'Doe', 42, [4, 8, 15, 16, 23, 42]
+user_presenter = UserPresenter.new user
+user_presenter.age.to_s  #=> "42 years"
+user_presenter.favorite_numbers.map(&:mod_3)  #=> [1, 2, 0, 1, 2, 0]
+```
 
 ## Contributing
 
