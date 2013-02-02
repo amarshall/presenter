@@ -28,6 +28,10 @@ class Presenter
     @presented.respond_to? name, include_private
   end
 
+  def public_methods
+    super | @presented.public_methods
+  end
+
   def == other
     @presented == other || super
   end

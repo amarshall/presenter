@@ -90,6 +90,16 @@ describe Presenter do
     (presenter === Object.new).should be_false
   end
 
+  describe "#public_methods" do
+    it "includes all public methods of the presented object" do
+      presented = Object.new
+      def presented.foo; end
+      presenter = Presenter.new presented
+
+      presenter.public_methods.should include :foo
+    end
+  end
+
   describe ".present" do
     it "wraps the presented's method with the given given presenter" do
       bar = 'bar'
