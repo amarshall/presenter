@@ -43,6 +43,23 @@ describe Presenter do
       presented.should_receive :to_s
       presenter.to_s
     end
+
+    it "delegates to_param when it doesn't exist on Object" do
+      presented = Object.new
+      presenter = Presenter.new presented
+
+      presented.should_receive :to_param
+      presented.to_param
+    end
+
+    it "delegates to_param when it exists on Object (put there by ActiveSupport)" do
+      Object.any_instance.stub :to_param
+      presented = Object.new
+      presenter = Presenter.new presented
+
+      presented.should_receive :to_param
+      presented.to_param
+    end
   end
 
   describe "responding" do

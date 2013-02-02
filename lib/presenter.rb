@@ -49,5 +49,6 @@ class Presenter
   end
   alias kind_of? is_a?
 
+  undef to_param if instance_methods.include? :to_param
   undef to_s
 end
