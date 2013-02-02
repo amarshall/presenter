@@ -7,6 +7,14 @@ class Presenter
     end
   end
 
+  def self.present_collection name, presenter
+    define_method name do
+      @presented.public_send(name).map do |elem|
+        presenter.new elem
+      end
+    end
+  end
+
   def initialize presented
     @presented = presented
   end
