@@ -1,63 +1,67 @@
 require './lib/presenter'
 
 describe Presenter do
-  it "delegates methods to the presented object when they don't exist on the presenter" do
-    presented = Object.new
-    def presented.foo arg
-      yield arg
-    end
-    presenter = Presenter.new presented
+  describe "delegating" do
+    it "delegates methods to the presented object when they don't exist on the presenter" do
+      presented = Object.new
+      def presented.foo arg
+        yield arg
+      end
+      presenter = Presenter.new presented
 
-    presenter.foo('bar', &->(o) { o.upcase }).should == 'BAR'
-  end
-
-  it "responds to methods on the presented" do
-    presented = Object.new
-    def presented.foo; end
-    presenter = Presenter.new presented
-
-    presenter.respond_to?(:foo).should be_true
-  end
-
-  it "does not respond to private methods on the presenter" do
-    presented = Object.new
-    def presented.foo; end
-    presented.singleton_class.send :private, :foo
-    presenter = Presenter.new presented
-
-    presenter.respond_to?(:foo).should be_false
-  end
-
-  it "does not delegate methods defined in the presenter which are defined on presented" do
-    presented = Object.new
-    def presented.foo; end
-    presenter = Presenter.new presented
-    def presenter.foo; end
-
-    presented.should_not_receive :foo
-
-    presenter.foo
-  end
-
-  it "does not delegate methods to the presented when they are not defined anywhere" do
-    presented = Object.new
-    presenter = Presenter.new presented
-
-    presented.should_not_receive :foo
-    def presented.respond_to? name, _ = false
-      return false if name.to_sym == :foo
-      super
+      presenter.foo('bar', &->(o) { o.upcase }).should == 'BAR'
     end
 
-    presenter.foo
+    it "does not delegate methods defined in the presenter which are defined on presented" do
+      presented = Object.new
+      def presented.foo; end
+      presenter = Presenter.new presented
+      def presenter.foo; end
+
+      presented.should_not_receive :foo
+
+      presenter.foo
+    end
+
+    it "does not delegate methods to the presented when they are not defined anywhere" do
+      presented = Object.new
+      presenter = Presenter.new presented
+
+      presented.should_not_receive :foo
+      def presented.respond_to? name, _ = false
+        return false if name.to_sym == :foo
+        super
+      end
+
+      presenter.foo
+    end
+
+    it "delegates to_s" do
+      presented = Object.new
+      presenter = Presenter.new presented
+
+      presented.should_receive :to_s
+      presenter.to_s
+    end
   end
 
-  it "delegates to_s" do
-    presented = Object.new
-    presenter = Presenter.new presented
+  describe "responding" do
+    it "responds to methods on the presented" do
+      presented = Object.new
+      def presented.foo; end
+      presenter = Presenter.new presented
 
-    presented.should_receive :to_s
-    presenter.to_s
+      presenter.respond_to?(:foo).should be_true
+    end
+
+    it "does not respond to private methods on the presenter" do
+      presented = Object.new
+      def presented.foo; end
+      presented.singleton_class.send :private, :foo
+      presenter = Presenter.new presented
+
+      presenter.respond_to?(:foo).should be_false
+    end
   end
 
   it "masquerades as an instance of the presented class" do
@@ -77,7 +81,7 @@ describe Presenter do
     (presenter == presented).should be_true
   end
 
-  it "subsumps what it presents" do
+  it "subsumps what it presents, and itself" do
     presented = Object.new
     presenter = Presenter.new presented
 
