@@ -1,5 +1,7 @@
 # Presenter
 
+[![Build Status](https://secure.travis-ci.org/amarshall/presenter.png)](http://travis-ci.org/amarshall/presenter)
+
 A simple presenter.
 
 ## Usage
