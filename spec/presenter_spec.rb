@@ -129,4 +129,23 @@ describe Presenter do
       presenter.bars.map(&:class).uniq.should == [collection_presenter]
     end
   end
+
+  describe "example in the readme" do
+    it "works" do
+      User = Struct.new :first_name, :last_name
+
+      class UserPresenter < Presenter
+        def full_name
+          [first_name, last_name].join(' ')
+        end
+      end
+
+      user = User.new 'John', 'Doe'
+      user_presenter = UserPresenter.new user
+      user_presenter.full_name.should == "John Doe"
+
+      Object.send :remove_const, :User
+      Object.send :remove_const, :UserPresenter
+    end
+  end
 end
