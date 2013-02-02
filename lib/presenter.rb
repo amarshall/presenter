@@ -20,7 +20,7 @@ class Presenter
   end
 
   def method_missing name, *args, &block
-    raise NoMethodError unless respond_to_missing? name
+    super unless respond_to_missing? name
     @presented.public_send name, *args, &block
   end
 
