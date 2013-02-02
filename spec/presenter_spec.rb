@@ -23,7 +23,7 @@ describe Presenter do
       presenter.foo
     end
 
-    it "does not delegate methods to the presented when they are not defined anywhere" do
+    it "does not delegate methods (raising instead) to the presented when they are not defined anywhere" do
       presented = Object.new
       presenter = Presenter.new presented
 
@@ -33,7 +33,7 @@ describe Presenter do
         super
       end
 
-      presenter.foo
+      expect { presenter.foo }.to raise_error NoMethodError
     end
 
     it "delegates to_s" do
