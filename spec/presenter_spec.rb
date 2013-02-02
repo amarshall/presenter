@@ -85,4 +85,19 @@ describe Presenter do
     (presenter === presenter).should be_true
     (presenter === Object.new).should be_false
   end
+
+  describe ".present" do
+    it "wraps the presented's method with the given given presenter" do
+      bar = 'bar'
+      bar_presenter = Class.new Presenter
+      presented = Object.new
+      presented.stub(:bar).and_return(bar)
+      presenter_class = Class.new Presenter do
+        self.present :bar, bar_presenter
+      end
+      presenter = presenter_class.new presented
+
+      presenter.bar.class.should == bar_presenter
+    end
+  end
 end

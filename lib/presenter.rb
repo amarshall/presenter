@@ -1,6 +1,12 @@
 require 'presenter/version'
 
 class Presenter
+  def self.present name, presenter
+    define_method name do
+      presenter.new @presented.public_send(name)
+    end
+  end
+
   def initialize presented
     @presented = presented
   end
