@@ -42,6 +42,7 @@ class NumberPresenter < Presenter
 end
 
 class UserPresenter < Presenter
+  extend Presenter::Helpers
   present :age, AgePresenter
   present_collection :favorite_numbers, NumberPresenter
 end

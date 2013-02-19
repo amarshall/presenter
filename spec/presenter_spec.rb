@@ -117,36 +117,6 @@ describe Presenter do
     end
   end
 
-  describe ".present" do
-    it "wraps the presented's method with the given given presenter" do
-      bar = 'bar'
-      bar_presenter = Class.new Presenter
-      presented = Object.new
-      presented.stub(:bar).and_return(bar)
-      presenter_class = Class.new Presenter do
-        self.present :bar, bar_presenter
-      end
-      presenter = presenter_class.new presented
-
-      presenter.bar.class.should == bar_presenter
-    end
-  end
-
-  describe ".present_collection" do
-    it "maps the presented's collection with the given presenter" do
-      collection = %w[a b c]
-      collection_presenter = Class.new Presenter
-      presented = Object.new
-      presented.stub(:bars).and_return(collection)
-      presenter_class = Class.new Presenter do
-        self.present_collection :bars, collection_presenter
-      end
-      presenter = presenter_class.new presented
-
-      presenter.bars.map(&:class).uniq.should == [collection_presenter]
-    end
-  end
-
   describe "basic example in the readme" do
     after do
       Object.send :remove_const, :User
@@ -191,6 +161,7 @@ describe Presenter do
       end
 
       class UserPresenter < Presenter
+        extend Presenter::Helpers
         present :age, AgePresenter
         present_collection :favorite_numbers, NumberPresenter
       end
