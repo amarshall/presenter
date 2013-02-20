@@ -4,6 +4,10 @@
 
 A simple presenter.
 
+## Why
+
+Why not just use `SimpleDelegator` you ask? Because this was mostly an exercise. There are a few notable differences between Presenter & SimpleDelegator, though. Mostly it’s that Presenter is a bit more enthusiastic in some respects about masquerading as the presented object. For example: `o = Object.new; Presenter.new(o) == Presenter.new(o)  #=> true`, whereas SimpleDelegator would return `false`. SimpleDelegator goes a bit farther in some places than Presenter, e.g. `taint`, etc., will call `taint` on both the delegator and the delegated object, and a few other interesting extras that aren’t really useful for a presenter in the way they might be for a more general buisiness object.
+
 ## Usage
 
 ```ruby
