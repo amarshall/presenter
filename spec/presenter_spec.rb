@@ -117,6 +117,17 @@ describe Presenter do
     end
   end
 
+  describe "#protected_methods" do
+    it "includes all protected methods of the presented object" do
+      presented = Object.new
+      def presented.foo; end
+      presented.singleton_class.send :protected, :foo
+      presenter = Presenter.new presented
+
+      presenter.protected_methods.should include :foo
+    end
+  end
+
   describe "basic example in the readme" do
     after do
       Object.send :remove_const, :User

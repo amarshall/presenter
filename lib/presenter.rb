@@ -18,6 +18,10 @@ class Presenter
     super | @presented.public_methods
   end
 
+  def protected_methods
+    super | @presented.protected_methods
+  end
+
   def == other
     @presented == other || super
   end
